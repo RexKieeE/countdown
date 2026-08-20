@@ -1,271 +1,168 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Countdown</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #0b0b0f;
-            color: #ffffff;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            text-align: center;
-        }
-
-        .title {
-            font-size: 18px;
-            letter-spacing: 6px;
-            color: #888;
-            margin-bottom: 35px;
-        }
-
-        .countdown {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .time-box {
-            min-width: 150px;
-        }
-
-        .number {
-            font-size: clamp(55px, 9vw, 110px);
-            font-weight: 300;
-            letter-spacing: 3px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .label {
-            margin-top: 8px;
-            font-size: 13px;
-            letter-spacing: 4px;
-            color: #777;
-        }
-
-        .colon {
-            font-size: clamp(45px, 7vw, 85px);
-            color: #555;
-            margin-bottom: 30px;
-        }
-
-        .target {
-            margin-top: 55px;
-            font-size: 15px;
-            color: #777;
-            letter-spacing: 2px;
-        }
-
-        .target span {
-            color: #ccc;
-        }
-
-        .progress-container {
-            width: 70%;
-            max-width: 650px;
-            height: 2px;
-            background: #292930;
-            margin: 45px auto 0;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            width: 100%;
-            background: #ffffff;
-            transform-origin: left;
-        }
-
-        .finished {
-            font-size: clamp(40px, 8vw, 90px);
-            letter-spacing: 8px;
-        }
-
-        @media (max-width: 650px) {
-            .countdown {
-                gap: 8px;
-            }
-
-            .time-box {
-                min-width: 65px;
-            }
-
-            .colon {
-                margin-bottom: 20px;
-            }
-
-            .label {
-                font-size: 9px;
-                letter-spacing: 2px;
-            }
-
-            .progress-container {
-                width: 90%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+    <!-- 背景光晕 -->
+    <div class="ambient ambient-1"></div>
+    <div class="ambient ambient-2"></div>
 
-    <div class="title">COUNTDOWN</div>
+    <main class="container">
 
-    <div id="countdown" class="countdown">
+        <!-- 顶部 -->
+        <header class="header">
 
-        <div class="time-box">
-            <div id="days" class="number">00</div>
-            <div class="label">DAYS</div>
-        </div>
+            <div class="logo">
+                COUNTDOWN
+            </div>
 
-        <div class="colon">:</div>
+            <div class="status">
+                <span class="status-dot"></span>
+                LIVE
+            </div>
 
-        <div class="time-box">
-            <div id="hours" class="number">00</div>
-            <div class="label">HOURS</div>
-        </div>
-
-        <div class="colon">:</div>
-
-        <div class="time-box">
-            <div id="minutes" class="number">00</div>
-            <div class="label">MINUTES</div>
-        </div>
-
-        <div class="colon">:</div>
-
-        <div class="time-box">
-            <div id="seconds" class="number">00</div>
-            <div class="label">SECONDS</div>
-        </div>
-
-    </div>
-
-    <div class="target">
-        Target:
-        <span>23 August 2026 · 20:00</span>
-    </div>
-
-    <div class="progress-container">
-        <div id="progress" class="progress"></div>
-    </div>
-
-</div>
+        </header>
 
 
-<script>
+        <!-- 主标题 -->
+        <section class="hero">
 
-    // ============================
-    // 设置目标时间
-    // ============================
+            <p class="eyebrow">
+                TIME REMAINING
+            </p>
 
-    const targetDate = new Date("2026-08-23T20:00:00+08:00");
+            <h1 id="countdown-title">
+                23 AUGUST 2026
+            </h1>
 
-    // 记录开始时间，用于计算进度条
-    const startDate = new Date();
+            <!-- 倒计时 -->
+            <div class="countdown">
 
-    // ============================
-    // 两位数格式化
-    // ============================
+                <div class="time-unit">
+                    <div class="number" id="days">00</div>
+                    <div class="label">DAYS</div>
+                </div>
 
-    function formatNumber(number) {
-        return String(number).padStart(2, "0");
-    }
+                <div class="separator">:</div>
 
-    // ============================
-    // 更新倒计时
-    // ============================
+                <div class="time-unit">
+                    <div class="number" id="hours">00</div>
+                    <div class="label">HOURS</div>
+                </div>
 
-    function updateCountdown() {
+                <div class="separator">:</div>
 
-        const now = new Date();
+                <div class="time-unit">
+                    <div class="number" id="minutes">00</div>
+                    <div class="label">MINUTES</div>
+                </div>
 
-        const difference = targetDate - now;
+                <div class="separator">:</div>
 
-        // 如果已经到达目标时间
-        if (difference <= 0) {
+                <div class="time-unit">
+                    <div class="number" id="seconds">00</div>
+                    <div class="label">SECONDS</div>
+                </div>
 
-            document.getElementById("countdown").innerHTML =
-                '<div class="finished">TIME\'S UP</div>';
+            </div>
 
-            document.getElementById("progress").style.width = "0%";
+        </section>
 
-            return;
-        }
 
-        // ============================
-        // 计算剩余时间
-        // ============================
+        <!-- 目标时间 -->
+        <section class="target">
 
-        const days = Math.floor(
-            difference / (1000 * 60 * 60 * 24)
-        );
+            <div class="target-line"></div>
 
-        const hours = Math.floor(
-            (difference / (1000 * 60 * 60)) % 24
-        );
+            <div class="target-info">
 
-        const minutes = Math.floor(
-            (difference / (1000 * 60)) % 60
-        );
+                <div>
+                    <span class="small-title">
+                        TARGET DATE
+                    </span>
 
-        const seconds = Math.floor(
-            (difference / 1000) % 60
-        );
+                    <span class="target-value">
+                        23 AUGUST 2026
+                    </span>
+                </div>
 
-        // ============================
-        // 显示
-        // ============================
 
-        document.getElementById("days").textContent =
-            formatNumber(days);
+                <div>
+                    <span class="small-title">
+                        TARGET TIME
+                    </span>
 
-        document.getElementById("hours").textContent =
-            formatNumber(hours);
+                    <span class="target-value">
+                        20:00
+                    </span>
+                </div>
 
-        document.getElementById("minutes").textContent =
-            formatNumber(minutes);
 
-        document.getElementById("seconds").textContent =
-            formatNumber(seconds);
+                <div>
+                    <span class="small-title">
+                        TIMEZONE
+                    </span>
 
-        // ============================
-        // 更新进度条
-        // ============================
+                    <span class="target-value">
+                        UTC+08:00
+                    </span>
+                </div>
 
-        const totalDuration = targetDate - startDate;
+            </div>
 
-        const remainingRatio = difference / totalDuration;
+        </section>
 
-        document.getElementById("progress").style.width =
-            `${remainingRatio * 100}%`;
-    }
 
-    // 第一次立即执行
-    updateCountdown();
+        <!-- 进度条 -->
+        <section class="progress-section">
 
-    // 每秒更新
-    setInterval(updateCountdown, 1000);
+            <div class="progress-header">
 
-</script>
+                <span>PROGRESS</span>
+
+                <span id="progress-percent">
+                    0%
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progress-fill">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 当前时间 -->
+        <footer class="footer">
+
+            <div>
+                CURRENT TIME
+            </div>
+
+            <div id="current-time">
+                --:--:--
+            </div>
+
+        </footer>
+
+    </main>
+
+
+    <script src="script.js"></script>
 
 </body>
 </html>
